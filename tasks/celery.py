@@ -51,7 +51,7 @@ REGISTER_DOI_DELAY_RETRY = int(os.environ.get('REGISTER_DOI_DELAY_RETRY', '600')
 REQUEST_DOI_DELAY_RETRY_TD = timedelta(seconds=REQUEST_DOI_DELAY_RETRY)
 REGISTER_DOI_DELAY_RETRY_TD = timedelta(seconds=REGISTER_DOI_DELAY_RETRY)
 SUGGEST_DOI_IDENTIFICATION = asbool(os.environ.get('SUGGEST_DOI_IDENTIFICATION', False))
-CROSSREF_SCHEMA_VERSION = '5.5.0'
+CROSSREF_SCHEMA_VERSION = os.environ.get('CROSSREF_SCHEMA_VERSION', '5.5.0')
 CROSSREF_SCHEMA_NAMESPACE = (
     'http://www.crossref.org/schema/%s' % CROSSREF_SCHEMA_VERSION
 )
@@ -92,7 +92,9 @@ def _required_element(xml_doc, path):
     element = xml_doc.find(path)
     if element is None:
         raise ValueError(
-            'Required Crossref 5.5.0 element not found: %s' % path
+            'Required Crossref %s element not found: %s' % (
+                CROSSREF_SCHEMA_VERSION, path
+            )
         )
     return element
 
